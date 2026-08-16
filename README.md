@@ -1,88 +1,54 @@
-# Neovim Config
+# My Neovim Setup
 
-This repository contains my custom Neovim configuration, designed to be simple, fast, and practical for daily development.
+I am a big fan of **Neovim**, so this repository contains the setup I use for coding, data work, databases, Markdown, and AI-assisted development.
 
----
+It is based on **[LazyVim](https://github.com/LazyVim/LazyVim)** and **[lazy.nvim](https://github.com/folke/lazy.nvim)**. I keep most features in separate Lua files, so it is easy to understand, replace, or remove individual parts.
 
-## 🚀 Overview
+![Neovim](https://img.shields.io/badge/Neovim-0.10+-57A143?logo=neovim\&logoColor=white)
+![Python](https://img.shields.io/badge/Python-Development-3776AB?logo=python\&logoColor=white)
+![Rust](https://img.shields.io/badge/Rust-Development-000000?logo=rust\&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-Database_Work-336791)
+![AI](https://img.shields.io/badge/AI-Local_%26_Cloud-8A2BE2)
 
-* **Plugin Manager:** Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for fast, modular loading.
-* **Appearance:** Transparent background with a minimal, terminal-friendly UI.
-* **Languages:** Built-in analyzers for Python, Rust, and Lua.
-* **AI Integration:** Codeium (Windsurf) and optional OpenAI API support.
+## What is included?
 
----
+* **Python development** — [Pyright](https://github.com/microsoft/pyright), Ruff, pylsp, Black, and isort give me diagnostics, formatting, linting, type information, and code navigation directly inside Neovim.
 
-## 🛠 Language Support
+* **Rust development** — [rustaceanvim](https://github.com/mrcjkb/rustaceanvim) runs `rust-analyzer`, while [crates.nvim](https://github.com/saecki/crates.nvim) makes working with Cargo dependencies more convenient.
 
-* **Python:** LSP support, formatting, diagnostics, and linting.
-* **Rust:** Full `rust-analyzer` integration.
-* **Lua:** Optimized for Neovim configuration and plugin development.
+* **Jupyter / IPython workflow** — [nvim-ipy](https://github.com/bfredl/nvim-ipy) lets me send a Python cell, selected code, or an entire file to IPython. This is useful for exploratory data analysis without leaving Neovim.
 
----
+* **Database UI inside Neovim** — [vim-dadbod](https://github.com/tpope/vim-dadbod), Dadbod UI, and database-aware SQL completion let me connect to databases, browse them, write queries, and get autocomplete without opening another application.
 
-## 🤖 AI Autocompletion
+* **Local AI with Ollama** — [CodeCompanion](https://github.com/olimorris/codecompanion.nvim) is connected to a local Ollama server. I can use local models for chat, commands, and code changes directly from the editor.
 
-### Codeium / Windsurf
-This config includes Codeium for AI-powered code completion. To authenticate:
+* **OpenAI inside Neovim** — I also keep optional OpenAI integration for cases where I want to use a cloud model instead of a local one. It can open chat or edit selected code directly from Neovim.
 
-1. Open Neovim and run `:Codeium Auth`.
-2. Follow the browser login flow and copy the token.
-3. Paste the token back into Neovim when prompted.
+* **AI autocomplete** — [Supermaven](https://github.com/supermaven-inc/supermaven-nvim) provides inline code suggestions while typing.
 
-### OpenAI API (Optional)
-To use features requiring OpenAI, export your API key before launching Neovim:
+* **Fast navigation** — [fzf-lua](https://github.com/ibhagwan/fzf-lua) and Telescope make it easy to search files, text, buffers, and documentation without navigating directories manually.
 
-```bash
-export OPENAI_API_KEY="your_api_key_here"
-```
+* **Treesitter** — better syntax highlighting and indentation for the languages I use, including Python, Rust, Lua, JSON, TOML, and SQL.
 
+* **Git integration** — [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) shows added, changed, and deleted lines directly next to the code.
 
-## 📋 Requirements
-* Neovim 0.10+
-* Git
-* Node.js (required for LSP tooling)
-* Python 3
-* Rust toolchain (for Rust Analyzer)
+* **Diagnostics** — [Trouble](https://github.com/folke/trouble.nvim) gives me one place to see errors, warnings, and other diagnostics across the project.
 
-## 📥 Installation
-Clone the repository into your local Neovim configuration directory:
+* **Markdown rendering** — [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) renders Markdown formatting directly inside Neovim, which makes README files and notes much easier to read.
 
-```bash
-git clone [https://github.com/IndianaBug/neovim_config](https://github.com/IndianaBug/neovim_config) ~/.config/nvim
-```
+* **File tree** — [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua) gives me a simple project explorer when I want a more traditional view of the repository.
 
-## 🪟 Windows (WSL / Ubuntu) – fzf-lua Setup Notes
+* **Completion and snippets** — `nvim-cmp` combines LSP suggestions, snippets, filesystem paths, and current-buffer words into one completion system. I keep automatic popup disabled and trigger completion when I actually want it.
 
-When using this Neovim config on Windows via WSL (Ubuntu), there are a few important details to ensure fzf-lua works correctly.
+* **Custom appearance** — transparent windows, custom syntax colors, Tokyonight, and a few UI changes make the editor feel less like a default setup and more like something adapted to my workflow.
 
-❗ Why this is needed
+* **WSL clipboard support** — when running Neovim through WSL, the configuration uses `win32yank` so copying between Linux, Neovim, and Windows works normally.
 
-Ubuntu/Debian ship an outdated fzf (0.44.x) which is incompatible with modern fzf-lua.
-Symptoms include:
+## Why this setup?
 
-unknown action: transform(...)
+I do not try to make Neovim reproduce every feature of a large IDE.
 
-fzf-lua pickers crashing or not opening
+The idea is to keep the editor **fast and keyboard-driven**, while adding the tools I actually use: Python and Rust development, SQL databases, Jupyter-style experimentation, Git, Markdown, search, and AI.
 
-errors when pressing <Space> f s, <Space> f f, etc.
-
-```
-mkdir -p ~/.local/bin
-cd ~/.local/bin
-
-FZF_VERSION="$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep -Po '"tag_name": "v\K[0-9.]+' )"
-curl -L -o fzf.tar.gz "https://github.com/junegunn/fzf/releases/latest/download/fzf-${FZF_VERSION}-linux_amd64.tar.gz"
-
-tar -xzf fzf.tar.gz
-chmod +x fzf
-rm fzf.tar.gz
-~/.local/bin/fzf --version
-```
-
-
-## 📄 License
-
-This repository contains personal Neovim configuration files.
-Neovim and all plugins remain the property of their respective authors.
+It is mostly a personal configuration, but if you use a similar workflow you may find some useful ideas here or reuse individual parts in your own setup.
 

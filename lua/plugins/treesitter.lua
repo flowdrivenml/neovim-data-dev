@@ -5,8 +5,6 @@ return {
     opts = {
       highlight = { enable = true },
       indent = { enable = true },
-      -- optional:
-      -- ensure_installed = { "lua", "python", "rust", "bash", "json" },
     },
   },
 }

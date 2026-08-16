@@ -3,7 +3,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "python", "lua", "rust", "toml", "json" })
+      -- Added "sql" here for database syntax highlighting
+      vim.list_extend(opts.ensure_installed, { "python", "lua", "rust", "toml", "json", "sql" })
       opts.highlight = opts.highlight or {}
       opts.highlight.enable = true
       opts.indent = opts.indent or {}
@@ -36,6 +37,46 @@ return {
     end,
   },
 
+  -- DATABASE ENGINE & UI PACKAGES
+  {
+    "tpope/vim-dadbod",
+    lazy = true,
+    dependencies = {
+      "kristijanhusak/vim-dadbod-ui",
+      "kristijanhusak/vim-dadbod-completion",
+    },
+    config = function()
+      -- Optional configuration for Dadbod UI
+      vim.g.db_ui_save_location = vim.fn.stdpath("config") .. "/db_ui"
+      vim.g.db_ui_show_database_navigation = 1
+    end,
+    -- Open Dadbod UI with these commands or shortcuts
+    cmd = {
+      "DBUI",
+      "DBUIToggle",
+      "DBUIAddConnection",
+      "DBUIFindBuffer",
+    },
+    init = function()
+      -- Hook autocomplete into SQL/PlSql files automatically
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "sql", "mysql", "plsql" },
+        callback = function()
+          -- Safely check if nvim-cmp is installed and loaded
+          local cmp_ok, cmp = pcall(require, "cmp")
+          if cmp_ok then
+            cmp.setup.buffer({
+              sources = {
+                { name = "vim-dadbod-completion" },
+                { name = "buffer" },
+              },
+            })
+          end
+        end,
+      })
+    end,
+  },
+
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -65,6 +106,8 @@ return {
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
+          -- Added vim-dadbod-completion source to global list safely
+          { name = "vim-dadbod-completion" },
         },
       })
 

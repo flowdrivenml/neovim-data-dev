@@ -8,7 +8,6 @@ return {
         sources = {
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
-          -- no ruff diagnostics here
         },
       })
     end,
